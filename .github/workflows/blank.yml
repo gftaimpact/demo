@@ -66,6 +66,7 @@ jobs:
               FILES="$FILES --form files=@$file"
             fi
           done
+          echo $FILES
           eval "curl --location 'http://localhost:4000/ai/document' \
             --form 'RunName=Demo_02' \
             $FILES \
