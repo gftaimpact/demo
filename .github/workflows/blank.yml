@@ -18,6 +18,7 @@ jobs:
           curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
                -H "Accept: application/vnd.github.v3+json" \
                https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }} | jq -r '.body' > issue_body.txt
+          cat issue_body.txt
           ATTACHMENTS=$(grep -Eo 'https://github.com/[^ ]+/issues/[^ ]+/[^ ]+' issue_body.txt)
           echo "attachments=$ATTACHMENTS" >> $GITHUB_ENV
 
