@@ -60,22 +60,25 @@ jobs:
       
       - name: Execute Curl Command
         run: |
+          FILES=""
           for file in attachments/*; do
             if [ "$file" != "attachments/*.zip" ]; then
-              curl --location 'http://localhost:4000/ai/document' \
-              --form "RunName=Demo_02" \
-              --form "files=@$file" \
-              --form "jobName=DemoDocCreator" \
-              --form "DocumentationFormat=markdown" \
-              --form "DiagramFormat=Mermaid" \
-              --form "SourceCodeLanguage=Java" \
-              --form "DocumentationAudience=tester" \
-              --form "PromptId=DocCreator__DocumentCode_V3" \
-              --form "TargetExtension=md" \
-              --form "Llm=GPT_4_128k" \
-              --form "AdditionalInstructions=Generate all answers in Brazilian Portuguese"
+              FILES="$FILES --form files=@$file"
             fi
           done
+          eval "curl --location 'http://localhost:4000/ai/document' \
+            --form 'RunName=Demo_02' \
+            $FILES \
+            --form 'jobName=DemoDocCreator' \
+            --form 'DocumentationFormat=markdown' \
+            --form 'DiagramFormat=Mermaid' \
+            --form 'SourceCodeLanguage=Java' \
+            --form 'DocumentationAudience=tester' \
+            --form 'PromptId=DocCreator__DocumentCode_V3' \
+            --form 'TargetExtension=md' \
+            --form 'Llm=GPT_4_128k' \
+            --form 'AdditionalInstructions=Generate all answers in Brazilian Portuguese'"
+
 
       - name: Docker Compose
         run: docker compose down
