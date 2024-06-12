@@ -31,7 +31,12 @@ jobs:
           cd attachments
           ls -la
 
-
+      
+      - name: Unzip attachments
+        run: |
+          for file in attachments/*.zip; do
+            unzip -o $file -d attachments/
+          done
 
 
       - name: Docker Login
@@ -49,26 +54,31 @@ jobs:
 
       # add docker compose task
       - name: Docker Compose
-        run: docker-compose up -d
+        run: docker compose up -d
         working-directory: /home/azureuser/aiimpact/.aiimpact
-
-      # - name: Execute Curl Command
-      #   run: |
-      #     curl --location 'http://localhost:4000/ai/document' \
-      #     --form 'RunName="Demo_02"' \
-      #     --form 'files=@"/Users/arruda/projects/demo-java-citi/src/main/java/com/scalesec/vulnado/User.java"' \
-      #     --form 'jobName="DemoDocCreator"' \
-      #     --form 'DocumentationFormat="markdown"' \
-      #     --form 'DiagramFormat="Mermaid"' \
-      #     --form 'SourceCodeLanguage="Java"' \
-      #     --form 'DocumentationAudience="tester"' \
-      #     --form 'PromptId="DocCreator__DocumentCode_V3"' \
-      #     --form 'TargetExtension="md"' \
-      #     --form 'Llm="GPT_4_128k"' \
-      #     --form 'AdditionalInstructions="Generate all answers in Brazilian Portuguese"'
+      
+      
+      - name: Execute Curl Command
+        run: |
+          for file in attachments/*; do
+            if [ "$file" != "attachments/*.zip" ]; then
+              curl --location 'http://localhost:4000/ai/document' \
+              --form "RunName=Demo_02" \
+              --form "files=@$file" \
+              --form "jobName=DemoDocCreator" \
+              --form "DocumentationFormat=markdown" \
+              --form "DiagramFormat=Mermaid" \
+              --form "SourceCodeLanguage=Java" \
+              --form "DocumentationAudience=tester" \
+              --form "PromptId=DocCreator__DocumentCode_V3" \
+              --form "TargetExtension=md" \
+              --form "Llm=GPT_4_128k" \
+              --form "AdditionalInstructions=Generate all answers in Brazilian Portuguese"
+            fi
+          done
 
       - name: Docker Compose
-        run: docker-compose down
+        run: docker compose down
         working-directory: /home/azureuser/aiimpact/.aiimpact
       
       
