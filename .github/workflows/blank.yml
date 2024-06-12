@@ -106,7 +106,7 @@ jobs:
 
       - name: Add Comment to Issue
         run: |
-          JOB_RESPONSE="${{ env.job_response }"
+          JOB_RESPONSE="${{ env.job_response }}"
           OUTPUT_URIS=$(echo $JOB_RESPONSE | jq -r '.results[].output[].uri')
           echo $OUTPUT_URIS
           COMMENT="Job completed. Generated files:"
