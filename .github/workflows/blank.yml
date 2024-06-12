@@ -26,7 +26,7 @@ jobs:
         run: |
           mkdir -p attachments
           for url in ${{ env.attachments }}; do
-            wget -P attachments $url
+            wget --header="Authorization: token ${{ secrets.GH_TOKEN }}" -P attachments $url
           done
           cd attachments
           ls -la
