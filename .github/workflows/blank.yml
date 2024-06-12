@@ -19,4 +19,21 @@ jobs:
           registry: ${{ secrets.DOCKER_REGISTRY }}
           username: ${{ secrets.DOCKER_LOGIN }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+      
+
+      # replace value on .env .aiimpact/.env
+      - name: Replace value on .env
+        run: |
+          sed -i "s|Llms__GPT_4_128k__Config__OpenAiKey=.*|Llms__GPT_4_128k__Config__OpenAiKey=${{ secrets.GPT_4_KEY }}|" .aiimpact/.env
+
+      # add docker compose task
+      - name: Docker Compose
+        run: docker-compose up -d
+        working-directory: .aiimpact
+
+      - name: Docker Compose
+        run: docker-compose down
+        working-directory: .aiimpact
+      
+      
           

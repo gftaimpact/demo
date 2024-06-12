@@ -1,0 +1,53 @@
+{
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Information"
+      }
+    },
+    "Subscription": {
+      "CustomerId": "FebTech"
+    },  
+    "AllowedHosts": "*",
+    "Jobs": {
+      "DemoDocCreator": {
+        "Type": "DocCreator",
+        "DefaultLlm": "GPT_4_128k",
+        "Config": {
+        }
+      },
+      "DemoCodeFixer": {
+        "Type": "CodeFixer",
+        "DefaultLlm": "GPT_4_128k",
+        "Config": {
+          "IssueSeverities":["BLOCKER", "CRITICAL", "MAJOR" ],
+          "IssueTypes":["BUG", "VULNERABILITY"]
+        }
+      },
+      "DemoTestCreator": {
+        "Type": "TestCreator",
+        "DefaultLlm": "GPT_4_128k",
+        "Config": {
+        }
+      }
+    },
+    "Llms": {
+      "GPT_4_128k": {
+        "Type": "OpenAi",
+        "Config": {
+          "EndPoint": "https://demo-aimpact-dev-2.openai.azure.com/",
+          "DeploymentName": "gpt4o"
+        }
+      }
+    },
+    "Sast":{
+      "Sonar_GFT_AI_IMPACT": {
+        "Type": "SonarQube",
+        "Config": {
+          "ServerUrl": "",
+          "ProjectKey": "gft-ai-impact"
+        }
+      }
+    }
+  }
+  

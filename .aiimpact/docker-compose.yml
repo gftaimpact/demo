@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  gft-ai-impact:
+    image: "gftai.azurecr.io/gft-ai-impact:latest"
+    container_name: gft-ai-impact-prd
+    ports:
+      - "4000:8080"
+    volumes:
+      - "./docker-appsettings.json:/app/appsettings.json"
+      - "./Work:/app/Work"
+      - "./Subscription:/app/Subscription"
+      - "./AdditionalExtensions:/app/AdditionalExtensions"
+      # if the variable is empty we assume /dev/null to not throw errors...
+      - "${GIT_VOLUME-/dev/null}:/git"
+      # if you want to have google credentials mapped
+      - "./GoogleCredentials.json:/app/GoogleCredentials.json"
+    env_file:
+      - .env
