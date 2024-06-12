@@ -104,13 +104,11 @@ jobs:
           echo "Final status: $STATUS"
           OUTPUT_URIS=$(echo $RESPONSE | jq -r '.results[].output[].uri')
           echo "job_response=$RESPONSE" >> $GITHUB_ENV
-          echo $OUTPUT_URIS
+          echo "output_uris=$OUTPUT_URIS" >> $GITHUB_ENV
 
       - name: Add Comment to Issue
         run: |
-          JOB_RESPONSE="${{ env.job_response }}"
-          OUTPUT_URIS=$(echo $JOB_RESPONSE | jq -r '.results[].output[].uri')
-          echo $OUTPUT_URIS
+          OUTPUT_URIS=${{ env.output_uris }}
           COMMENT="Job completed. Generated files:"
           for uri in $OUTPUT_URIS; do
             FILE_URL="http://localhost:4000${uri}"
