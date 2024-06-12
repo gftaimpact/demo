@@ -17,8 +17,8 @@ jobs:
           REPO=${{ github.repository }}
           curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                -H "Accept: application/vnd.github.v3+json" \
-               https://api.github.com/repos/$REPO/issues/$ISSUE_NUMBER/comments | jq -r '.[].body' > issue_comments.txt
-          ATTACHMENTS=$(grep -Eo 'https://github.com/.*/issues/.*/.*' issue_comments.txt)
+               https://api.github.com/repos/$REPO/issues/$ISSUE_NUMBER/comments | jq -r '.[] | .body' > issue_comments.txt
+          ATTACHMENTS=$(grep -Eo 'https://github.com/[^ ]+/issues/[^ ]+/[^ ]+' issue_comments.txt)
           echo "attachments=$ATTACHMENTS" >> $GITHUB_ENV
 
       - name: Download attachments
