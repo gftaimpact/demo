@@ -108,17 +108,18 @@ jobs:
         run: |
           JOB_RESPONSE=${{ env.job_response }}
           OUTPUT_FILES=$(echo $JOB_RESPONSE | jq -r '.additionalResultFiles[]')
-          COMMENT="Job completed. Generated files:\n"
+          COMMENT="Job completed. Generated files:"
           for file in $OUTPUT_FILES; do
             FILE_URL="http://localhost:4000${file}"
             FILE_CONTENT=$(curl --location $FILE_URL)
             COMMENT="${COMMENT}\n\n\`\`\`\n$FILE_CONTENT\n\`\`\`"
           done
+          COMMENT=$(echo "$COMMENT" | jq -sR .)
           ISSUE_NUMBER=${{ github.event.issue.number }}
           REPO=${{ github.repository }}
           curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
                -H "Accept: application/vnd.github.v3+json" \
-               -d "{\"body\": \"$COMMENT\"}" \
+               -d "{\"body\": $COMMENT}" \
                https://api.github.com/repos/$REPO/issues/$ISSUE_NUMBER/comments
 
 
