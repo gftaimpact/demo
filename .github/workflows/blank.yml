@@ -45,12 +45,12 @@ jobs:
       # replace value on .env .aiimpact/.env
       - name: Replace value on .env
         run: |
-          sed -i "s|Llms__GPT_4_128k__Config__OpenAiKey=.*|Llms__GPT_4_128k__Config__OpenAiKey=${{ secrets.GPT_4_KEY }}|" .aiimpact/.env
+          sed -i "s|Llms__GPT_4_128k__Config__OpenAiKey=.*|Llms__GPT_4_128k__Config__OpenAiKey=${{ secrets.GPT_4_KEY }}|" /home/azureuser/aiimpact/.aiimpact/.env
 
       # add docker compose task
       - name: Docker Compose
         run: docker-compose up -d
-        working-directory: .aiimpact
+        working-directory: /home/azureuser/aiimpact/.aiimpact
 
       # - name: Execute Curl Command
       #   run: |
@@ -69,7 +69,7 @@ jobs:
 
       - name: Docker Compose
         run: docker-compose down
-        working-directory: .aiimpact
+        working-directory: /home/azureuser/aiimpact/.aiimpact
       
       
           
