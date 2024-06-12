@@ -61,6 +61,10 @@ jobs:
         working-directory: /home/azureuser/aiimpact/.aiimpact
       
       
+      - run: |
+          sleep 3 
+      
+      
       - name: Execute Curl Command
         run: |
           FILES=""
