@@ -109,15 +109,15 @@ jobs:
       - name: Add Comment to Issue
         run: |
           OUTPUT_URIS=${{ env.output_uris }}
-          COMMENT="Job completed. Generated files:"
+          COMMENT="Aqui está a documentação gerada com foco em: Tester <br>"
           for uri in $OUTPUT_URIS; do
             FILE_URL="http://localhost:4000${uri}"
             FILE_CONTENT=$(curl --location $FILE_URL)
-            COMMENT="${COMMENT}\n\n\`\`\`\n$FILE_CONTENT\n\`\`\`"
+            COMMENT="${COMMENT}\n\n\`\`\`markdown\n$FILE_CONTENT\n\`\`\`"
           done
-          COMMENT=$(echo "$COMMENT" | jq -sR .)
           ISSUE_NUMBER=${{ github.event.issue.number }}
           REPO=${{ github.repository }}
+          COMMENT=$(jq -sR . <<< "$COMMENT")
           curl -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
                -H "Accept: application/vnd.github.v3+json" \
                -d "{\"body\": $COMMENT}" \
